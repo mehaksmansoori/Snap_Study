@@ -1,8 +1,7 @@
 # SnapStudy
 
-AI-powered tool to summarize, transcribe, quiz, and translate long video lectures.
+SnapStudy is an AI-powered educational assistant that can generate quizzes, summarize notes, and translate content using GenAI models. Built with a Flask backend and React frontend.
 
-## Setup
 
 ### Backend
 
@@ -20,4 +19,3 @@ npm install
 npm start
 ```
 
-Ensure you have FFmpeg installed and an OpenAI API key set in your environment.
