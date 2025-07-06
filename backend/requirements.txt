@@ -1,0 +1,9 @@
+Flask
+flask-cors
+python-dotenv
+transformers
+torch
+moviepy
+whisper
+deep-translator
+google-generativeai
