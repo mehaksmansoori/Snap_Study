@@ -1,182 +1,123 @@
-// import React, { useState } from "react";
-
-// function App() {
-//   const [file, setFile] = useState(null);
-//   const [response, setResponse] = useState(null);
-//   const [loading, setLoading] = useState(false);
-
-//   const handleUpload = async () => {
-//     if (!file) return alert("Please select a file first.");
-
-//     const formData = new FormData();
-//     formData.append("file", file);
-
-//     setLoading(true); // Show loading while request is processing
-
-//     try {
-//       const res = await fetch("http://localhost:5000/upload", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (!res.ok) {
-//         throw new Error(`Server responded with status ${res.status}`);
-//       }
-
-//       const data = await res.json();
-//       setResponse(data);
-//     } catch (error) {
-//       console.error("Upload failed:", error);
-//       alert("Failed to upload or process the video. Make sure the backend is running and all Python files are error-free.");
-//     } finally {
-//       setLoading(false); // Always stop loading
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: "20px", fontFamily: "Arial" }}>
-//       <h2>🎥 SnapStudy - Upload a Video</h2>
-//       <input type="file" accept="video/*" onChange={(e) => setFile(e.target.files[0])} />
-//       <br />
-//       <button onClick={handleUpload} style={{ marginTop: "10px" }}>Upload</button>
-
-//       {loading && <p style={{ color: "blue" }}>⏳ Processing video, please wait...</p>}
-
-//       {response && !loading && (
-//         <div style={{ marginTop: "20px" }}>
-//           <h3>📝 Summary:</h3>
-//           <p>{response.summary}</p>
-
-//           <h3>🗣️ Transcript:</h3>
-//           <p>{response.transcript}</p>
-
-//           <h3>❓ Quiz:</h3>
-//           <pre>{response.quiz}</pre>
-
-//           <h3>🌐 Translated Summary (Hindi):</h3>
-//           <p>{response.translated_summary}</p>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default App;
-
-// import React, { useState } from "react";
-
-// function App() {
-//   const [file, setFile] = useState(null);
-//   const [response, setResponse] = useState(null);
-//   const [loading, setLoading] = useState(false);
-
-//   const handleUpload = async () => {
-//     if (!file) return alert("Please select a file first.");
-
-//     const formData = new FormData();
-//     formData.append("file", file);
-
-//     setLoading(true);
-//     try {
-//       const res = await fetch("http://localhost:5000/upload", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (!res.ok) throw new Error("Upload failed");
-
-//       const data = await res.json();
-//       setResponse(data);
-//     } catch (err) {
-//       alert("Failed to process video. Check backend and logs.");
-//       console.error(err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gray-100 p-6 font-sans">
-//       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-6">
-//         <h1 className="text-3xl font-bold text-center mb-6 text-blue-700">
-//           🎓 SnapStudy - Your Smart Study Partner
-//         </h1>
-
-//         <div className="flex flex-col items-center gap-4">
-//           <input
-//             type="file"
-//             accept="video/*"
-//             onChange={(e) => setFile(e.target.files[0])}
-//             className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-//           />
-
-//           <button
-//             onClick={handleUpload}
-//             className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
-//           >
-//             🚀 Upload & Process
-//           </button>
-
-//           {loading && (
-//             <p className="text-blue-500 mt-4 animate-pulse">
-//               ⏳ Processing video... Please wait...
-//             </p>
-//           )}
-//         </div>
-
-//         {response && !loading && (
-//           <div className="mt-8 space-y-6">
-//             <div>
-//               <h2 className="text-xl font-semibold text-green-700">📝 Summary</h2>
-//               <p className="text-gray-700 mt-2">{response.summary}</p>
-//             </div>
-
-//             <div>
-//               <h2 className="text-xl font-semibold text-indigo-700">🗣️ Transcript</h2>
-//               <p className="text-gray-700 mt-2">{response.transcript}</p>
-//             </div>
-
-//             <div>
-//               <h2 className="text-xl font-semibold text-yellow-700">❓ Quiz</h2>
-//               <pre className="bg-yellow-50 p-3 rounded-lg text-gray-800">{response.quiz}</pre>
-//             </div>
-
-//             <div>
-//               <h2 className="text-xl font-semibold text-red-700">
-//                 🌐 Translated Summary (Hindi)
-//               </h2>
-//               <p className="text-gray-700 mt-2">{response.translated_summary}</p>
-//             </div>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import InteractiveQuiz from './components/InteractiveQuiz';
+import AboutUs from './components/AboutUs';
+import "./index.css"; 
 
 function App() {
   const [file, setFile] = useState(null);
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [dragActive, setDragActive] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [activeTab, setActiveTab] = useState("summary");
+  const [typingText, setTypingText] = useState("");
+  const [hasTyped, setHasTyped] = useState(false); 
+  const [currentPage, setCurrentPage] = useState("home"); 
+  const [selectedLanguage, setSelectedLanguage] = useState("hi"); 
+  const fileInputRef = useRef(null);
+  const videoRef = useRef(null);
+
+  const languageOptions = [
+    { code: "hi", name: "Hindi", flag: "🇮🇳" },
+    { code: "fr", name: "French", flag: "🇫🇷" },
+    { code: "es", name: "Spanish", flag: "🇪🇸" },
+    { code: "de", name: "German", flag: "🇩🇪" },
+    { code: "zh", name: "Chinese", flag: "🇨🇳" },
+    { code: "ja", name: "Japanese", flag: "🇯🇵" },
+  ];
+
+  // Animated progress simulation during upload
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 90) return prev;
+          return prev + Math.random() * 8;
+        });
+      }, 400);
+
+      return () => clearInterval(interval);
+    } else {
+      setUploadProgress(0);
+    }
+  }, [loading]);
+
+  // Typing animation for results - only run once per response
+  useEffect(() => {
+    if (response && activeTab === "summary" && !hasTyped) {
+      setTypingText("");
+      let i = 0;
+      const text = response.summary;
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          setTypingText(text.slice(0, i + 1));
+          i++;
+        } else {
+          clearInterval(interval);
+          setHasTyped(true); // Mark as typed so it doesn't repeat
+        }
+      }, 20);
+      return () => clearInterval(interval);
+    } else if (response && activeTab === "summary" && hasTyped) {
+      // If already typed, show full text immediately
+      setTypingText(response.summary);
+    }
+  }, [response, activeTab, hasTyped]);
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const droppedFile = e.dataTransfer.files[0];
+      if (droppedFile.type.startsWith("video/")) {
+        setFile(droppedFile);
+        setError("");
+      } else {
+        setError("Please upload a valid video file");
+      }
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files[0];
+      if (selectedFile.type.startsWith("video/")) {
+        setFile(selectedFile);
+        setError("");
+      } else {
+        setError("Please upload a valid video file");
+      }
+    }
+  };
 
   const handleUpload = async () => {
-    if (!file) return alert("Please select a file first.");
-
-    if (!file.type.startsWith("video/")) {
-      return alert("Please upload a valid video file.");
+    if (!file) {
+      setError("Please select a video file first");
+      return;
     }
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("target_lang", selectedLanguage);
 
     setLoading(true);
     setError("");
     setResponse(null);
+    setUploadProgress(0);
+    setHasTyped(false); // Reset typing state for new upload
 
     try {
       const res = await fetch("http://localhost:5000/upload", {
@@ -185,102 +126,360 @@ function App() {
       });
 
       const data = await res.json();
+      setUploadProgress(100);
 
       if (!res.ok) {
-        throw new Error(data.error || "Unknown error occurred");
+        throw new Error(data.error || "Upload failed");
       }
 
-      setResponse(data);
+      setTimeout(() => {
+        setResponse(data);
+        setActiveTab("summary");
+      }, 800);
+
     } catch (err) {
       console.error("❌ Upload error:", err);
-      setError(err.message || "Failed to process video. Try again.");
+      setError(err.message || "Failed to process video. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  const resetUpload = () => {
+    setFile(null);
+    setResponse(null);
+    setError("");
+    setUploadProgress(0);
+    setTypingText("");
+    setHasTyped(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
+  const formatDuration = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const tabs = [
+    { id: "summary", label: "Summary", icon: "📄", color: "emerald" },
+    { id: "transcript", label: "Transcript", icon: "📝", color: "blue" },
+    { id: "quiz", label: "Quiz", icon: "🧠", color: "amber" },
+    { id: "translation", label: "Translation", icon: "🌍", color: "rose" }
+  ];
+
+  // Navigation functions
+  const goToAboutUs = () => setCurrentPage("about");
+  const goToHome = () => setCurrentPage("home");
+
+  // Render About Us page
+  if (currentPage === "about") {
+    return <AboutUs onBackToHome={goToHome} />;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 p-6 font-sans">
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-6">
-        <h1 className="text-3xl font-bold text-center mb-6 text-blue-700">
-          🎓 SnapStudy - Your Smart Study Partner
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="floating-orb orb-1"></div>
+        <div className="floating-orb orb-2"></div>
+        <div className="floating-orb orb-3"></div>
+        <div className="grid-background"></div>
+      </div>
 
-        <div className="flex flex-col items-center gap-4">
-          <input
-            type="file"
-            accept="video/*"
-            onChange={(e) => setFile(e.target.files[0])}
-            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-          />
-
-          {file && (
-            <video
-              src={URL.createObjectURL(file)}
-              controls
-              className="mt-2 rounded shadow-md max-w-full"
-            />
-          )}
-
-          <button
-            onClick={handleUpload}
-            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
-            disabled={loading}
-          >
-            🚀 Upload & Process
-          </button>
-
-          {loading && (
-            <p className="text-blue-500 mt-4 animate-pulse">
-              ⏳ Processing video... Please wait...
+      {/* Main Content */}
+      <div className="relative z-10 min-h-screen p-4 md:p-8">
+        <div className="max-w-6xl mx-auto">
+          
+          {/* Header */}
+          <div className="text-center mb-12 animate-fade-in">
+            <div className="inline-flex items-center gap-4 mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center text-3xl transform rotate-3 hover:rotate-6 transition-transform duration-300 shadow-2xl">
+                🎓
+              </div>
+              <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent drop-shadow-2xl">
+                SnapStudy
+              </h1>
+            </div>
+            <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-medium">
+              Transform your videos into 
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 font-bold"> interactive learning experiences </span>
+              with AI-powered summarization, quizzes, and translations
             </p>
-          )}
-          {error && (
-            <p className="text-red-600 font-medium mt-2">
-              ❌ {error}
-            </p>
-          )}
-        </div>
-
-        {response && !loading && (
-          <div className="mt-8 space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold text-green-700">📝 Summary</h2>
-              <div className="max-h-60 overflow-y-auto p-3 bg-green-50 rounded">
-                <p className="text-gray-700 whitespace-pre-wrap">{response.summary}</p>
+            <div className="mt-8 flex justify-center gap-4 text-sm text-slate-400">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                AI-Powered
               </div>
-            </div>
-
-            <div>
-              <h2 className="text-xl font-semibold text-indigo-700">🗣️ Transcript</h2>
-              <div className="max-h-60 overflow-y-auto p-3 bg-indigo-50 rounded">
-                <p className="text-gray-700 whitespace-pre-wrap">{response.transcript}</p>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                Multi-language
               </div>
-            </div>
-
-            <div>
-              <h2 className="text-xl font-semibold text-yellow-700">❓ Quiz</h2>
-              <div className="max-h-60 overflow-y-auto p-3 bg-yellow-50 rounded">
-                <pre className="text-gray-800 whitespace-pre-wrap">{response.quiz}</pre>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-xl font-semibold text-red-700">
-                🌐 Translated Summary (Hindi)
-              </h2>
-              <div className="max-h-60 overflow-y-auto p-3 bg-red-50 rounded">
-                <p className="text-gray-700 whitespace-pre-wrap">{response.translated_summary}</p>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                Interactive
               </div>
             </div>
           </div>
-        )}
+
+          {/* Upload Section */}
+          <div className="glass-card mb-8 animate-slide-up">
+            <div
+              className={`upload-zone ${dragActive ? "drag-active" : ""} ${file ? "has-file" : ""}`}
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+              onClick={() => !file && fileInputRef.current?.click()}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="video/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+
+              {!file ? (
+                <div className="text-center">
+                  <div className="upload-icon mb-6">
+                    <svg className="w-16 h-16 mx-auto text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">Drop your video here</h3>
+                  <p className="text-slate-400 mb-4">or click to browse your files</p>
+                  <div className="flex flex-wrap justify-center gap-2 text-xs text-slate-500">
+                    <span className="px-2 py-1 bg-slate-800 rounded">MP4</span>
+                    <span className="px-2 py-1 bg-slate-800 rounded">AVI</span>
+                    <span className="px-2 py-1 bg-slate-800 rounded">MOV</span>
+                    <span className="px-2 py-1 bg-slate-800 rounded">MKV</span>
+                    <span className="px-2 py-1 bg-slate-800 rounded">Max 500MB</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="file-preview">
+                  {file.type.startsWith("video/") && (
+                    <video
+                      ref={videoRef}
+                      src={URL.createObjectURL(file)}
+                      controls
+                      className="max-w-full max-h-48 rounded-xl mb-4 shadow-2xl"
+                      preload="metadata"
+                      onLoadedMetadata={() => {
+                        // Only log once when metadata is loaded
+                        if (videoRef.current && !videoRef.current.dataset.logged) {
+                          console.log("Video duration:", formatDuration(videoRef.current.duration));
+                          videoRef.current.dataset.logged = "true";
+                        }
+                      }}
+                    />
+                  )}
+                  <div className="file-info">
+                    <h4 className="text-xl font-semibold text-white mb-2">{file.name}</h4>
+                    <div className="flex justify-center gap-4 text-slate-400 text-sm">
+                      <span>{formatFileSize(file.size)}</span>
+                      <span>•</span>
+                      <span>{file.type.split('/')[1].toUpperCase()}</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      resetUpload();
+                    }}
+                    className="remove-file-btn mt-4"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Remove File
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Language Selection */}
+            <div className="mt-6">
+              <label className="block text-sm font-medium text-slate-300 mb-3">
+                🌐 Translation Language
+              </label>
+              <div className="relative">
+                <select
+                  value={selectedLanguage}
+                  onChange={(e) => setSelectedLanguage(e.target.value)}
+                  className="language-select"
+                >
+                  {languageOptions.map((lang) => (
+                    <option key={lang.code} value={lang.code}>
+                      {lang.flag} {lang.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 mt-6">
+              <button
+                onClick={handleUpload}
+                disabled={!file || loading}
+                className="primary-btn flex-1"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="loading-spinner"></div>
+                    <span>Processing Magic...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-3">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span>Transform Video</span>
+                  </div>
+                )}
+              </button>
+              
+              {file && (
+                <button onClick={resetUpload} className="secondary-btn">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  <span>Start Over</span>
+                </button>
+              )}
+            </div>
+
+            {/* Progress Bar */}
+            {loading && (
+              <div className="progress-container mt-6">
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill"
+                    style={{ width: `${uploadProgress}%` }}
+                  ></div>
+                </div>
+                <p className="text-center text-slate-400 mt-3 font-medium">
+                  {uploadProgress < 20 ? "🎵 Extracting audio..." : 
+                   uploadProgress < 50 ? "🎯 Transcribing content..." :
+                   uploadProgress < 70 ? "📝 Generating summary..." :
+                   uploadProgress < 90 ? "🧠 Creating quiz..." : "✨ Finalizing..."}
+                </p>
+              </div>
+            )}
+
+            {/* Error Message */}
+            {error && (
+              <div className="error-alert mt-6">
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{error}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Results Section */}
+          {response && !loading && (
+            <div className="results-container animate-fade-in">
+              {/* Tab Navigation */}
+              <div className="tab-navigation mb-6">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`tab-button ${activeTab === tab.id ? "active" : ""}`}
+                  >
+                    <span className="text-2xl mb-1">{tab.icon}</span>
+                    <span className="tab-label">{tab.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Tab Content */}
+              <div className="tab-content">
+                {activeTab === "summary" && (
+                  <div className="content-card summary-card">
+                    <div className="card-header">
+                      <h3>📝 Smart Summary</h3>
+                      <div className="word-count">
+                        {response.summary.split(' ').length} words
+                      </div>
+                    </div>
+                    <div className="card-content">
+                      <p className="leading-relaxed">
+                        {typingText || response.summary}
+                        {typingText && typingText.length < response.summary.length && (
+                          <span className="animate-pulse">|</span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === "transcript" && (
+                  <div className="content-card transcript-card">
+                    <div className="card-header">
+                      <h3>🗣️ Full Transcript</h3>
+                      <div className="word-count">
+                        {response.transcript.split(' ').length} words
+                      </div>
+                    </div>
+                    <div className="card-content">
+                      <p className="leading-relaxed">{response.transcript}</p>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === "quiz" && (
+                  <InteractiveQuiz quizData={response.quiz} />
+                )}
+
+                {activeTab === "translation" && (
+                  <div className="content-card translation-card">
+                    <div className="card-header">
+                      <h3>🌍 Translation</h3>
+                      <div className="language-badge">
+                        {languageOptions.find(lang => lang.code === selectedLanguage)?.flag} {languageOptions.find(lang => lang.code === selectedLanguage)?.name}
+                      </div>
+                    </div>
+                    <div className="card-content">
+                      <p className="leading-relaxed translation-text">{response.translated_summary}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="relative z-10 text-center py-8 text-slate-500 text-sm">
+        <p>
+          Made with ❤️ by{" "}
+          <button 
+            onClick={goToAboutUs}
+            className="underline hover:text-purple-400 transition-colors cursor-pointer"
+          >
+            Team Pradeep
+          </button>
+          {" "}• SnapStudy v1.0
+        </p>
       </div>
     </div>
   );
 }
 
 export default App;
-
-
-
