@@ -1195,3 +1195,988 @@ body {
     color: black !important;
   }
 }
+
+/* ========================================
+   CUSTOM LANGUAGE DROPDOWN STYLES 
+   ======================================== */
+.custom-language-selector {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.custom-language-selector:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(102, 126, 234, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+}
+
+.custom-language-selector:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.language-dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin-top: 0.5rem;
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  animation: dropdown-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+@keyframes dropdown-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.language-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.language-search-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.language-search-input::placeholder {
+  color: rgba(148, 163, 184, 0.6);
+}
+
+.language-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(148, 163, 184, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.2);
+  sticky: top;
+  z-index: 1;
+}
+
+.language-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  margin-bottom: 0.25rem;
+}
+
+.language-option:hover {
+  background: rgba(102, 126, 234, 0.1);
+  transform: translateX(4px);
+}
+
+.language-option.selected {
+  background: rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+}
+
+.language-option.selected:hover {
+  background: rgba(102, 126, 234, 0.25);
+}
+
+/* Custom Scrollbar for Dropdown */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(102, 126, 234, 0.5) rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(102, 126, 234, 0.5);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(102, 126, 234, 0.7);
+}
+
+/* Animation for language options */
+.language-option {
+  animation: language-option-fade-in 0.3s ease-out;
+}
+
+@keyframes language-option-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .language-dropdown-panel {
+    position: fixed;
+    top: 50%;
+    left: 1rem;
+    right: 1rem;
+    transform: translateY(-50%);
+    max-height: 80vh;
+  }
+  
+  .custom-language-selector {
+    padding: 0.875rem;
+  }
+  
+  .language-option {
+    padding: 1rem 0.75rem;
+  }
+  
+  .language-search-input {
+    padding: 1rem 1rem 1rem 2.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .language-dropdown-panel {
+    background: rgba(15, 23, 42, 0.98);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Search Results Highlighting */
+.language-option {
+  position: relative;
+}
+
+.language-option.search-result {
+  animation: search-highlight 0.3s ease-out;
+}
+
+@keyframes search-highlight {
+  0% {
+    background: rgba(102, 126, 234, 0.3);
+    transform: scale(1.02);
+  }
+  100% {
+    background: transparent;
+    transform: scale(1);
+  }
+}
+
+/* Empty State Improvements */
+.search-empty-state {
+  padding: 2rem;
+  text-align: center;
+  animation: fade-in-up 0.3s ease-out;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Search Input Focus State */
+.language-search-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 0 0 2px rgba(102, 126, 234, 0.2),
+    0 0 20px rgba(102, 126, 234, 0.1);
+}
+
+/* Group Header Sticky */
+.language-group-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+}
+
+/* Better scrollbar for search results */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(118, 75, 162, 0.5));
+  border-radius: 3px;
+}
+
+/* Language option hover states */
+.language-option:hover .text-slate-400 {
+  color: rgba(196, 181, 253, 0.8);
+}
+
+.language-option.selected:hover {
+  background: rgba(102, 126, 234, 0.3);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+/* Search clear button animation */
+.language-search-input + button {
+  transition: all 0.2s ease;
+}
+
+.language-search-input + button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+/* Dropdown panel entrance animation */
+.language-dropdown-panel {
+  animation: dropdown-slide-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropdown-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .custom-language-selector {
+    border-width: 2px;
+    border-color: #ffffff;
+  }
+  
+  .language-option.selected {
+    background: #667eea;
+    color: #ffffff;
+  }
+  
+  .language-dropdown-panel {
+    border-width: 2px;
+    border-color: #ffffff;
+  }
+}
+
+
+/* ========================================
+   UNIQUE QUIZ STYLES - NO CONFLICTS
+   Mumbai, Newyork, Delhi, Bangalore classes
+   ======================================== */
+
+/* Mumbai Quiz Container */
+.mumbai-quiz-container {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  animation: mumbai-slide-up 0.6s ease-out;
+  border-left: 4px solid #f59e0b;
+}
+
+.mumbai-quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mumbai-quiz-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.delhi-question-number {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.delhi-answers-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.delhi-user-answer,
+.delhi-correct-answer-display {
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.delhi-user-answer.delhi-correct-answer {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+.delhi-user-answer.delhi-wrong-answer {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.delhi-correct-answer-display {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+.delhi-answer-label {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.delhi-answer-choice {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.delhi-answer-text {
+  font-weight: 400;
+}
+
+/* Mumbai Question Section */
+.mumbai-question-section {
+  margin-bottom: 1.5rem;
+}
+
+.mumbai-question-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.mumbai-click-indicator {
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #10b981;
+  font-size: 0.875rem;
+}
+
+.mumbai-options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* BANGALORE QUIZ OPTIONS */
+.bangalore-quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  position: relative;
+}
+
+.bangalore-quiz-option:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(102, 126, 234, 0.5);
+  transform: translateY(-1px);
+}
+
+.bangalore-quiz-option.bangalore-selected {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: #667eea;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+.bangalore-quiz-option:active {
+  transform: translateY(0);
+}
+
+.bangalore-option-letter {
+  width: 40px;
+  height: 40px;
+  background: rgba(102, 126, 234, 0.2);
+  border: 2px solid #667eea;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.bangalore-quiz-option.bangalore-selected .bangalore-option-letter {
+  background: #667eea;
+  color: white;
+}
+
+.bangalore-option-text {
+  flex: 1;
+  color: white;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.bangalore-option-check {
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.bangalore-check-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Mumbai Navigation */
+.mumbai-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.mumbai-nav-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+
+.mumbai-nav-button.mumbai-previous {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mumbai-nav-button.mumbai-previous:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.mumbai-nav-button.mumbai-next {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.mumbai-nav-button.mumbai-next:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+}
+
+.mumbai-nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.mumbai-question-counter {
+  text-align: center;
+}
+
+.mumbai-counter-text {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Mumbai Error State */
+.mumbai-error-state {
+  text-align: center;
+  padding: 2rem;
+}
+
+.mumbai-error-icon {
+  width: 4rem;
+  height: 4rem;
+  color: #ef4444;
+  margin: 0 auto 1rem;
+}
+
+.mumbai-error-text {
+  color: #94a3b8;
+}
+
+/* Animations */
+@keyframes mumbai-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .mumbai-quiz-container {
+    margin: 0 1rem;
+  }
+  
+  .mumbai-quiz-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+  }
+  
+  .mumbai-quiz-content {
+    padding: 1.5rem;
+  }
+  
+  .mumbai-navigation {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .mumbai-nav-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .mumbai-question-counter {
+    order: -1;
+  }
+  
+  .bangalore-quiz-option {
+    padding: 0.875rem;
+  }
+  
+  .mumbai-question-text {
+    font-size: 1.125rem;
+  }
+  
+  .newyork-scroll-container {
+    max-height: 300px; /* Smaller on mobile */
+  }
+  
+  .newyork-scroll-content {
+    max-height: 300px;
+  }
+  
+  .delhi-question-card {
+    padding: 0.75rem;
+  }
+  
+  .delhi-question-header {
+    gap: 0.5rem;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .mumbai-quiz-container {
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #ffffff;
+  }
+  
+  .bangalore-quiz-option.bangalore-selected {
+    background: #667eea;
+    color: #ffffff;
+  }
+  
+  .delhi-question-card {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mumbai-quiz-container,
+  .bangalore-quiz-option,
+  .mumbai-nav-button {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .bangalore-quiz-option:hover,
+  .mumbai-nav-button:hover {
+    transform: none !important;
+  }
+}
+
+.mumbai-quiz-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.mumbai-quiz-badge.mumbai-error {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.mumbai-quiz-content {
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Mumbai Progress */
+.mumbai-progress-section {
+  padding: 0 2rem 1rem;
+}
+
+.mumbai-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.mumbai-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mumbai Quiz Start */
+.mumbai-quiz-start {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.mumbai-start-icon {
+  margin-bottom: 1.5rem;
+}
+
+.mumbai-icon-large {
+  width: 5rem;
+  height: 5rem;
+  margin: 0 auto;
+  color: #a855f7;
+}
+
+.mumbai-start-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.mumbai-start-description {
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.mumbai-start-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.mumbai-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mumbai-feature-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+}
+
+.mumbai-feature-dot.mumbai-blue { background: #3b82f6; }
+.mumbai-feature-dot.mumbai-green { background: #10b981; }
+.mumbai-feature-dot.mumbai-purple { background: #a855f7; }
+
+.mumbai-feature-text {
+  color: #94a3b8;
+}
+
+.mumbai-start-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.mumbai-start-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+}
+
+.mumbai-button-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Mumbai Results */
+.mumbai-results-summary {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.mumbai-score-circle {
+  width: 120px;
+  height: 120px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  position: relative;
+}
+
+.mumbai-score-number {
+  font-size: 3.75rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.mumbai-score-label {
+  color: #94a3b8;
+  margin: 0;
+}
+
+.mumbai-text-green { color: #4ade80; }
+.mumbai-text-yellow { color: #facc15; }
+.mumbai-text-red { color: #f87171; }
+
+.mumbai-results-message {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.mumbai-results-summary-text {
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
+}
+
+.mumbai-results-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.mumbai-retake-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.mumbai-retake-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* NEWYORK REVIEW SECTION - SCROLLABLE */
+.newyork-review-section {
+  margin-bottom: 1.5rem;
+}
+
+.newyork-review-header {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  border-bottom: 1px solid #475569;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+/* CRITICAL: Fixed scrollable container */
+.newyork-scroll-container {
+  position: relative;
+  max-height: 400px; /* Fixed height for scrolling */
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.newyork-scroll-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(102, 126, 234, 0.5) rgba(255, 255, 255, 0.05);
+}
+
+.newyork-scroll-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.newyork-scroll-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.newyork-scroll-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.6), rgba(118, 75, 162, 0.6));
+  border-radius: 4px;
+}
+
+.newyork-scroll-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+}
+
+.newyork-scroll-indicator {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  background: rgba(30, 41, 59, 0.9);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* DELHI QUESTION CARDS */
+.delhi-question-card {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  border: 2px solid;
+  transition: all 0.3s ease;
+}
+
+.delhi-question-card.delhi-correct {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.delhi-question-card.delhi-incorrect {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.delhi-question-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.delhi-result-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.delhi-result-icon.delhi-correct-icon {
+  background: #10b981;
+  color: white;
+}
+
+.delhi-result-icon.delhi-incorrect-icon {
+  background: #ef4444;
+  color: white;
+}
+
+.delhi-question-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.delhi-question-text {
+  color: white;
+    margin: 0;
+}

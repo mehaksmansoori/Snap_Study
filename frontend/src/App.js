@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import InteractiveQuiz from './components/InteractiveQuiz';
 import AboutUs from './components/AboutUs';
+import CustomLanguageDropdown from './components/CustomLanguageDropdown';
 import "./index.css"; 
 
 function App() {
@@ -18,13 +19,57 @@ function App() {
   const fileInputRef = useRef(null);
   const videoRef = useRef(null);
 
+  // EXPANDED LANGUAGE OPTIONS
   const languageOptions = [
-    { code: "hi", name: "Hindi", flag: "🇮🇳" },
-    { code: "fr", name: "French", flag: "🇫🇷" },
-    { code: "es", name: "Spanish", flag: "🇪🇸" },
-    { code: "de", name: "German", flag: "🇩🇪" },
-    { code: "zh", name: "Chinese", flag: "🇨🇳" },
-    { code: "ja", name: "Japanese", flag: "🇯🇵" },
+    // Most Popular Languages
+    { code: "hi", name: "Hindi", flag: "🇮🇳", native: "हिन्दी" },
+    { code: "fr", name: "French", flag: "🇫🇷", native: "Français" },
+    { code: "es", name: "Spanish", flag: "🇪🇸", native: "Español" },
+    { code: "de", name: "German", flag: "🇩🇪", native: "Deutsch" },
+    // { code: "zh", name: "Chinese", flag: "🇨🇳", native: "中文" },
+    // { code: "ja", name: "Japanese", flag: "🇯🇵", native: "日本語" },
+    
+    // Additional Popular Languages
+    // { code: "ar", name: "Arabic", flag: "🇸🇦", native: "العربية" },
+    // { code: "pt", name: "Portuguese", flag: "🇵🇹", native: "Português" },
+    // { code: "ru", name: "Russian", flag: "🇷🇺", native: "Русский" },
+    // { code: "ko", name: "Korean", flag: "🇰🇷", native: "한국어" },
+    // { code: "it", name: "Italian", flag: "🇮🇹", native: "Italiano" },
+    // { code: "tr", name: "Turkish", flag: "🇹🇷", native: "Türkçe" },
+    
+    // Indian Languages
+    { code: "bn", name: "Bengali", flag: "🇧🇩", native: "বাংলা" },
+    { code: "te", name: "Telugu", flag: "🇮🇳", native: "తెలుగు" },
+    { code: "mr", name: "Marathi", flag: "🇮🇳", native: "मराठी" },
+    { code: "ta", name: "Tamil", flag: "🇮🇳", native: "தமிழ்" },
+    { code: "gu", name: "Gujarati", flag: "🇮🇳", native: "ગુજરાતી" },
+    { code: "kn", name: "Kannada", flag: "🇮🇳", native: "ಕನ್ನಡ" },
+    { code: "ml", name: "Malayalam", flag: "🇮🇳", native: "മലയാളം" },
+    { code: "pa", name: "Punjabi", flag: "🇮🇳", native: "ਪੰਜਾਬੀ" },
+    
+    // Other Popular Languages
+    // { code: "nl", name: "Dutch", flag: "🇳🇱", native: "Nederlands" },
+    // { code: "pl", name: "Polish", flag: "🇵🇱", native: "Polski" },
+    // { code: "sv", name: "Swedish", flag: "🇸🇪", native: "Svenska" },
+    // { code: "da", name: "Danish", flag: "🇩🇰", native: "Dansk" },
+    // { code: "no", name: "Norwegian", flag: "🇳🇴", native: "Norsk" },
+    // { code: "fi", name: "Finnish", flag: "🇫🇮", native: "Suomi" },
+    // { code: "th", name: "Thai", flag: "🇹🇭", native: "ไทย" },
+    // { code: "vi", name: "Vietnamese", flag: "🇻🇳", native: "Tiếng Việt" },
+    // { code: "he", name: "Hebrew", flag: "🇮🇱", native: "עברית" },
+    // { code: "id", name: "Indonesian", flag: "🇮🇩", native: "Bahasa Indonesia" },
+    // { code: "ms", name: "Malay", flag: "🇲🇾", native: "Bahasa Melayu" },
+    // { code: "uk", name: "Ukrainian", flag: "🇺🇦", native: "Українська" },
+    // { code: "cs", name: "Czech", flag: "🇨🇿", native: "Čeština" },
+    // { code: "hu", name: "Hungarian", flag: "🇭🇺", native: "Magyar" },
+    // { code: "ro", name: "Romanian", flag: "🇷🇴", native: "Română" },
+    // { code: "bg", name: "Bulgarian", flag: "🇧🇬", native: "Български" },
+    // { code: "hr", name: "Croatian", flag: "🇭🇷", native: "Hrvatski" },
+    // { code: "sk", name: "Slovak", flag: "🇸🇰", native: "Slovenčina" },
+    // { code: "sl", name: "Slovenian", flag: "🇸🇮", native: "Slovenščina" },
+    // { code: "et", name: "Estonian", flag: "🇪🇪", native: "Eesti" },
+    // { code: "lv", name: "Latvian", flag: "🇱🇻", native: "Latviešu" },
+    // { code: "lt", name: "Lithuanian", flag: "🇱🇹", native: "Lietuvių" }
   ];
 
   // Animated progress simulation during upload
@@ -55,12 +100,11 @@ function App() {
           i++;
         } else {
           clearInterval(interval);
-          setHasTyped(true); // Mark as typed so it doesn't repeat
+          setHasTyped(true);
         }
       }, 20);
       return () => clearInterval(interval);
     } else if (response && activeTab === "summary" && hasTyped) {
-      // If already typed, show full text immediately
       setTypingText(response.summary);
     }
   }, [response, activeTab, hasTyped]);
@@ -117,7 +161,7 @@ function App() {
     setError("");
     setResponse(null);
     setUploadProgress(0);
-    setHasTyped(false); // Reset typing state for new upload
+    setHasTyped(false);
 
     try {
       const res = await fetch("http://localhost:5000/upload", {
@@ -182,6 +226,11 @@ function App() {
   const goToAboutUs = () => setCurrentPage("about");
   const goToHome = () => setCurrentPage("home");
 
+  // Get selected language info
+  const getSelectedLanguageInfo = () => {
+    return languageOptions.find(lang => lang.code === selectedLanguage) || languageOptions[0];
+  };
+
   // Render About Us page
   if (currentPage === "about") {
     return <AboutUs onBackToHome={goToHome} />;
@@ -223,7 +272,7 @@ function App() {
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                Multi-language
+                {languageOptions.length}+ Languages
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
@@ -277,7 +326,6 @@ function App() {
                       className="max-w-full max-h-48 rounded-xl mb-4 shadow-2xl"
                       preload="metadata"
                       onLoadedMetadata={() => {
-                        // Only log once when metadata is loaded
                         if (videoRef.current && !videoRef.current.dataset.logged) {
                           console.log("Video duration:", formatDuration(videoRef.current.duration));
                           videoRef.current.dataset.logged = "true";
@@ -309,24 +357,16 @@ function App() {
               )}
             </div>
 
-            {/* Language Selection */}
+            {/* Beautiful Custom Language Selection */}
             <div className="mt-6">
               <label className="block text-sm font-medium text-slate-300 mb-3">
-                🌐 Translation Language
+                🌐 Translation Language ({languageOptions.length} languages supported)
               </label>
-              <div className="relative">
-                <select
-                  value={selectedLanguage}
-                  onChange={(e) => setSelectedLanguage(e.target.value)}
-                  className="language-select"
-                >
-                  {languageOptions.map((lang) => (
-                    <option key={lang.code} value={lang.code}>
-                      {lang.flag} {lang.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <CustomLanguageDropdown
+                languageOptions={languageOptions}
+                selectedLanguage={selectedLanguage}
+                onLanguageChange={setSelectedLanguage}
+              />
             </div>
 
             {/* Action Buttons */}
@@ -451,11 +491,29 @@ function App() {
                     <div className="card-header">
                       <h3>🌍 Translation</h3>
                       <div className="language-badge">
-                        {languageOptions.find(lang => lang.code === selectedLanguage)?.flag} {languageOptions.find(lang => lang.code === selectedLanguage)?.name}
+                        {getSelectedLanguageInfo().flag} {getSelectedLanguageInfo().name}
                       </div>
                     </div>
                     <div className="card-content">
-                      <p className="leading-relaxed translation-text">{response.translated_summary}</p>
+                      <div className="mb-4 p-3 bg-slate-800/50 rounded-lg border border-slate-600">
+                        <p className="text-sm text-slate-400 mb-1">Translated to:</p>
+                        <p className="text-purple-400 font-medium">
+                          {getSelectedLanguageInfo().name} ({getSelectedLanguageInfo().native})
+                        </p>
+                      </div>
+                      <p className="leading-relaxed translation-text" 
+                         style={{ 
+                           fontFamily: ['hi', 'bn', 'te', 'mr', 'ta', 'gu', 'kn', 'ml', 'pa'].includes(selectedLanguage) 
+                             ? "'Noto Sans Devanagari', 'Mukti', sans-serif" 
+                             : ['zh', 'ja', 'ko'].includes(selectedLanguage)
+                             ? "'Noto Sans CJK', sans-serif"
+                             : ['ar', 'he'].includes(selectedLanguage)
+                             ? "'Noto Sans Arabic', sans-serif"
+                             : "inherit",
+                           direction: ['ar', 'he'].includes(selectedLanguage) ? 'rtl' : 'ltr'
+                         }}>
+                        {response.translated_summary}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -466,7 +524,7 @@ function App() {
       </div>
 
       {/* Footer */}
-      <div className="relative z-10 text-center py-8 text-slate-500 text-sm">
+      {/* <div className="relative z-10 text-center py-8 text-slate-500 text-sm">
         <p>
           Made with ❤️ by{" "}
           <button 
@@ -477,7 +535,7 @@ function App() {
           </button>
           {" "}• SnapStudy v1.0
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }
