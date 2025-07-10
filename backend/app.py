@@ -340,3 +340,6 @@ if __name__ == "__main__":
         print("2. Restart PowerShell after FFmpeg installation")
         print("3. All Python dependencies are installed: pip install -r requirements.txt")
         sys.exit(1)
+# expose app instance for gunicorn
+app_instance = SnapStudyApp()
+app = app_instance.app
